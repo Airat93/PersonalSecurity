@@ -2,7 +2,7 @@
 {
     using System.IO;
 
-    public static class StreamExstension
+    internal static class StreamExstension
     {
         public static Stream ToStream(this string str)
         {

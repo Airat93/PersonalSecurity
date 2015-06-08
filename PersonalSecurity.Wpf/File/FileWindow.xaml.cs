@@ -46,7 +46,7 @@
 
                 var encryptedFilePath = _fileManager.GetEncryptedFilePath(file.Name);
 
-                FileCipher.EncryptFile(openDialog.FileName, encryptedFilePath, "password");
+                FileCipher.EncryptFile(openDialog.FileName, encryptedFilePath, _password);
 
                 _cloudApi.UploadFile(file, new FileStream(encryptedFilePath, FileMode.Open), OnUploadComplete);
             }

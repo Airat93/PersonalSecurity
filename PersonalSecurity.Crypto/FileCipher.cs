@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Security;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -11,12 +12,16 @@
 
         private const int Iterations = 1024;
 
-        public static void EncryptFile(string sourceFilename, string destinationFilename, string password)
+        public static void EncryptFile(string sourceFilename, string destinationFilename, SecureString securePass)
         {
             var aes = new AesManaged();
             aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
             aes.KeySize = aes.LegalKeySizes[0].MaxSize;
-            var key = new Rfc2898DeriveBytes(password, Salt, Iterations);
+
+            var password = new Password(securePass);
+            var key = new Rfc2898DeriveBytes(password.Value.ToString(), Salt, Iterations);
+            password.Dispose();
+
             aes.Key = key.GetBytes(aes.KeySize / 8);
             aes.IV = key.GetBytes(aes.BlockSize / 8);
             aes.Mode = CipherMode.CBC;
@@ -34,13 +39,16 @@
             }
         }
 
-        public static void DecryptFile(string sourceFilename, string destinationFilename, string password)
+        public static void DecryptFile(string sourceFilename, string destinationFilename, SecureString securePass)
         {
             var aes = new AesManaged();
             aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
             aes.KeySize = aes.LegalKeySizes[0].MaxSize;
-            // NB: Rfc2898DeriveBytes initialization and subsequent calls to   GetBytes   must be eactly the same, including order, on both the encryption and decryption sides.
-            var key = new Rfc2898DeriveBytes(password, Salt, Iterations);
+
+            var password = new Password(securePass);
+            var key = new Rfc2898DeriveBytes(password.Value.ToString(), Salt, Iterations);
+            password.Dispose();
+
             aes.Key = key.GetBytes(aes.KeySize / 8);
             aes.IV = key.GetBytes(aes.BlockSize / 8);
             aes.Mode = CipherMode.CBC;

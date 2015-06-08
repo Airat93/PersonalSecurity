@@ -81,7 +81,7 @@ namespace PersonalSecurity.Wpf
             {
                 using (var stream = new StreamReader(_cloudApi.DownloadFile(file.FileType, file.Name)))
                 {
-                    var text = Cipher.DecryptText(stream.ReadToEnd(), "password");
+                    var text = Cipher.DecryptText(stream.ReadToEnd(), _password);
 
                     var result = _piiDeserializer.Deserialize<PersonalTemplate>(text);
                     var personalView = new PersonalView(result);
@@ -102,7 +102,7 @@ namespace PersonalSecurity.Wpf
             {
                 using (var stream = new StreamReader(_cloudApi.DownloadFile(file.FileType, file.Name)))
                 {
-                    var text = Cipher.DecryptText(stream.ReadToEnd(), "password");
+                    var text = Cipher.DecryptText(stream.ReadToEnd(), _password);
 
                     var passwordTemplate = _piiDeserializer.Deserialize<PasswordTemplate>(text);
                     foreach (var credential in passwordTemplate.Credentials)
@@ -130,7 +130,7 @@ namespace PersonalSecurity.Wpf
             {
                 using (var stream = new StreamReader(_cloudApi.DownloadFile(file.FileType, file.Name)))
                 {
-                    var text = Cipher.DecryptText(stream.ReadToEnd(), "password");
+                    var text = Cipher.DecryptText(stream.ReadToEnd(), _password);
 
                     var result = _piiDeserializer.Deserialize<PassportTemplate>(text);
 
@@ -148,7 +148,7 @@ namespace PersonalSecurity.Wpf
         private void DownloadFiles_Click(object sender, RoutedEventArgs e)
         {
             var files = _fileManager.GetByFileType(FileType.File);
-            var fileView = new FileView(files, _cloudApi, _fileManager);
+            var fileView = new FileView(files, _cloudApi, _fileManager, _password);
             fileView.ShowDialog();
         }
 

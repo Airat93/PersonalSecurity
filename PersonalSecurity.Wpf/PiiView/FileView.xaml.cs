@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
+﻿using System.Linq;
 namespace PersonalSecurity.Wpf.PiiView
 {
     using System.Diagnostics;
     using System.IO;
+    using System.Security;
+    using System.Windows;
     using PersonalSecurity.Crypto;
     using PersonalSecurity.DataAccess.Domain;
     using PersonalSecurity.Files;
-    using PersonalSecurity.PII.Deserializing;
     using PersonalSecurity.Yandex;
     using FileInfo = PersonalSecurity.DataAccess.Domain.FileInfo;
 
@@ -30,10 +19,13 @@ namespace PersonalSecurity.Wpf.PiiView
         private readonly ICloudApi _cloudApi;
         private readonly IFileManager _fileManager;
 
-        public FileView(FileInfo[] files, ICloudApi cloudApi, IFileManager fileManager)
+        private readonly SecureString _password;
+
+        public FileView(FileInfo[] files, ICloudApi cloudApi, IFileManager fileManager, SecureString password)
         {
             _cloudApi = cloudApi;
             _fileManager = fileManager;
+            _password = password;
             InitializeComponent();
 
             GridItems.ItemsSource = files.Select(x => new FileItem { Name = x.Name, Type = x.FileForm });
@@ -54,7 +46,7 @@ namespace PersonalSecurity.Wpf.PiiView
                 }
 
                 var decryptedPath = _fileManager.GetLocalFilePath(item.Name);
-                FileCipher.DecryptFile(path, decryptedPath, "password");
+                FileCipher.DecryptFile(path, decryptedPath, _password);
 
                 LaunchDirectory(_fileManager.LocalDir);
                 LaunchFile(decryptedPath);

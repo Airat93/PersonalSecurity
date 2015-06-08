@@ -49,7 +49,7 @@ namespace PersonalSecurity.Wpf.Password
         {
             var piiSer = _piiBuilder.BuildPii(_passwords);
 
-            var stream = Cipher.EncryptText(piiSer, "password");
+            var stream = Cipher.EncryptText(piiSer, _password);
 
             var file = _fileManager.CreateFileInfo(FileType.Passwords, _cloudApi.Cloud);
 

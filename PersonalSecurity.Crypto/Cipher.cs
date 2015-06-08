@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Security;
     using System.Security.Cryptography;
     using System.Text;
 
@@ -17,11 +18,15 @@
         // This constant is used to determine the keysize of the encryption algorithm.
         private const int Keysize = 256;
 
-        public static Stream EncryptText(string plainText, string passPhrase)
+        public static Stream EncryptText(string plainText, SecureString securePass)
         {
+            var passPhrase = new Password(securePass);
+
             var bytes = Encoding.UTF8.GetBytes(plainText);
-            using (var password = new Rfc2898DeriveBytes(passPhrase, Salt))
+            using (var password = new Rfc2898DeriveBytes(passPhrase.Value.ToString(), Salt))
             {
+                passPhrase.Dispose();
+
                 byte[] keyBytes = password.GetBytes(Keysize / 8);
                 using (var symmetricKey = new RijndaelManaged())
                 {
@@ -43,11 +48,15 @@
             }
         }
 
-        public static string DecryptText(string cipherText, string passPhrase)
+        public static string DecryptText(string cipherText, SecureString securePass)
         {
+            var passPhrase = new Password(securePass);
+
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
-            using (var password = new Rfc2898DeriveBytes(passPhrase, Salt))
+            using (var password = new Rfc2898DeriveBytes(passPhrase.Value.ToString(), Salt))
             {
+                passPhrase.Dispose();
+
                 byte[] keyBytes = password.GetBytes(Keysize / 8);
                 using (var symmetricKey = new RijndaelManaged())
                 {
@@ -69,20 +78,6 @@
                         }
                     }
                 }
-            }
-        }
-
-        private static byte[] ReadFully(Stream input)
-        {
-            var buffer = new byte[16 * 1024];
-            using (var ms = new MemoryStream())
-            {
-                int read;
-                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-                return ms.ToArray();
             }
         }
     }

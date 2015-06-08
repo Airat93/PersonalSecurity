@@ -54,7 +54,7 @@ namespace PersonalSecurity.Wpf.Personal
 
             var str = _piiBuilder.BuildPii(item);
 
-            var stream = Cipher.EncryptText(str, "password");
+            var stream = Cipher.EncryptText(str, _password);
 
             var file = _fileManager.CreateFileInfo(FileType.Personal, _cloudApi.Cloud);
 

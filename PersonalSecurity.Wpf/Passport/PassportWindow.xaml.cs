@@ -54,7 +54,7 @@ namespace PersonalSecurity.Wpf.Passport
                           };
 
             var str = _piiBuilder.BuildPii(pii);
-            var stream = Cipher.EncryptText(str, "password");
+            var stream = Cipher.EncryptText(str, _password);
             var file = _fileManager.CreateFileInfo(FileType.Passport, _cloudApi.Cloud);
             _cloudApi.UploadFile(file, stream, OnUploadCompleted);
         }
