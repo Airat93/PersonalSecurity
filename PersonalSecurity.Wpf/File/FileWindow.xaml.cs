@@ -1,6 +1,7 @@
 ﻿namespace PersonalSecurity.Wpf.File
 {
     using System.IO;
+    using System.Security;
     using System.Windows;
     using Microsoft.Win32;
     using PersonalSecurity.Crypto;
@@ -15,10 +16,13 @@
         private readonly IFileManager _fileManager;
         private readonly ICloudApi _cloudApi;
 
-        public FileWindow(ICloudApi cloudApi, IFileManager fileManager)
+        private readonly SecureString _password;
+
+        public FileWindow(ICloudApi cloudApi, IFileManager fileManager, SecureString password)
         {
             _cloudApi = cloudApi;
             _fileManager = fileManager;
+            _password = password;
 
             InitializeComponent();
         }

@@ -18,6 +18,8 @@ namespace PersonalSecurity.Wpf
     using System.IO;
     using System.Net;
     using System.Runtime.CompilerServices;
+    using System.Security;
+    using Microsoft.Practices.ObjectBuilder2;
     using Microsoft.Practices.Unity;
     using Microsoft.Win32;
     using PersonalSecurity.Crypto;
@@ -46,6 +48,8 @@ namespace PersonalSecurity.Wpf
         private readonly IPiiBuilder _piiBuilder;
         private readonly ICloudApi _cloudApi;
 
+        private SecureString _password = new SecureString();
+
         public PersonalInfo(CloudType currentCloud)
         {
             InitializeComponent();
@@ -59,6 +63,8 @@ namespace PersonalSecurity.Wpf
             _piiBuilder = App.Container.Resolve<IPiiBuilder>();
 
             CloudName.Content = currentCloud;
+
+            MainGrid.Visibility = Visibility.Hidden;
         }
 
         private void Return_Click(object sender, RoutedEventArgs e)
@@ -139,18 +145,6 @@ namespace PersonalSecurity.Wpf
             }
         }
 
-        private void Password_Click(object sender, RoutedEventArgs e)
-        {
-            var passwordWindow = new PasswordWindow(_piiBuilder, _fileManager, _cloudApi);
-            passwordWindow.Show();
-        }
-
-        private void Upload_Click(object sender, RoutedEventArgs e)
-        {
-            var fileWindow = new FileWindow(_cloudApi, _fileManager);
-            fileWindow.Show();
-        }
-
         private void DownloadFiles_Click(object sender, RoutedEventArgs e)
         {
             var files = _fileManager.GetByFileType(FileType.File);
@@ -158,21 +152,43 @@ namespace PersonalSecurity.Wpf
             fileView.ShowDialog();
         }
 
+        private void Password_Click(object sender, RoutedEventArgs e)
+        {
+            var passwordWindow = new PasswordWindow(_piiBuilder, _fileManager, _cloudApi, _password);
+            passwordWindow.Show();
+        }
+
+        private void Upload_Click(object sender, RoutedEventArgs e)
+        {
+            var fileWindow = new FileWindow(_cloudApi, _fileManager, _password);
+            fileWindow.Show();
+        }
+
         private void Passport_Click(object sender, RoutedEventArgs e)
         {
-            var passportWindow = new PassportWindow(_piiBuilder, _fileManager, _cloudApi);
+            var passportWindow = new PassportWindow(_piiBuilder, _fileManager, _cloudApi, _password);
             passportWindow.Show();
         }
 
         private void Personal_Click(object sender, RoutedEventArgs e)
         {
-            var personalWindow = new PersonalWindow(_piiBuilder, _fileManager, _cloudApi);
+            var personalWindow = new PersonalWindow(_piiBuilder, _fileManager, _cloudApi, _password);
             personalWindow.Show();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void PasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordText.Password.ToCharArray().ForEach(x => _password.AppendChar(x));
+
+            _password.MakeReadOnly();
+
+            PasswordPanel.Visibility = Visibility.Hidden;
+            MainGrid.Visibility = Visibility.Visible;
         }
     }
 }

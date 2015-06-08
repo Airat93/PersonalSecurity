@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 
 namespace PersonalSecurity.Wpf.Personal
 {
+    using System.Security;
     using PersonalSecurity.Crypto;
     using PersonalSecurity.DataAccess.Domain;
     using PersonalSecurity.Files;
@@ -30,11 +31,14 @@ namespace PersonalSecurity.Wpf.Personal
         private readonly IFileManager _fileManager;
         private readonly ICloudApi _cloudApi;
 
-        public PersonalWindow(IPiiBuilder piiBuilder, IFileManager fileManager, ICloudApi cloudApi)
+        private readonly SecureString _password;
+
+        public PersonalWindow(IPiiBuilder piiBuilder, IFileManager fileManager, ICloudApi cloudApi, SecureString password)
         {
             _piiBuilder = piiBuilder;
             _fileManager = fileManager;
             _cloudApi = cloudApi;
+            _password = password;
 
             InitializeComponent();
         }

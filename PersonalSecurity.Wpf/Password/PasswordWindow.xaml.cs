@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 namespace PersonalSecurity.Wpf.Password
 {
     using System.IO;
+    using System.Security;
     using PersonalSecurity.Crypto;
     using PersonalSecurity.DataAccess.Domain;
     using PersonalSecurity.Files;
@@ -33,11 +34,14 @@ namespace PersonalSecurity.Wpf.Password
 
         private readonly PasswordTemplate _passwords = new PasswordTemplate();
 
-        public PasswordWindow(IPiiBuilder piiBuilder, IFileManager fileManager, ICloudApi cloudApi)
+        private readonly SecureString _password;
+
+        public PasswordWindow(IPiiBuilder piiBuilder, IFileManager fileManager, ICloudApi cloudApi, SecureString password)
         {
             _piiBuilder = piiBuilder;
             _fileManager = fileManager;
             _cloudApi = cloudApi;
+            _password = password;
             InitializeComponent();
         }
 

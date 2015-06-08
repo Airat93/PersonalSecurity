@@ -50,12 +50,23 @@
 
         public void SaveFile(FileInfo fileInfo)
         {
-            while (_fileInfoRepository.GetByName(fileInfo.Name) != null)
+            if (fileInfo.FileType == FileType.File)
             {
-                fileInfo.Name = GetUniquePath();
+                var file = _fileInfoRepository.GetByName(fileInfo.Name);
+                if (file == null)
+                {
+                    _fileInfoRepository.Save(fileInfo);
+                }
             }
+            else
+            {
+                while (_fileInfoRepository.GetByName(fileInfo.Name) != null)
+                {
+                    fileInfo.Name = GetUniquePath();
+                }
 
-            _fileInfoRepository.Save(fileInfo);
+                _fileInfoRepository.Save(fileInfo);
+            }
         }
 
         public string GetEncryptedFilePath(string fileName)
@@ -73,14 +84,6 @@
             get
             {
                 return _localPath;
-            }
-        }
-
-        public string EncryptedDir
-        {
-            get
-            {
-                return _encryptedPath;
             }
         }
 
