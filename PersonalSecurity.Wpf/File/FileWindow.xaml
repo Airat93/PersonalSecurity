@@ -1,7 +1,7 @@
 ﻿<Window x:Name="Window" x:Class="PersonalSecurity.Wpf.File.FileWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FileWindow" Height="217" Width="353">
+        Title="FileWindow" Height="217" Width="353" Background="#FF978F8F">
     <Grid x:Name="Grid">
         <Label x:Name="FileType" Content="Тип файла" HorizontalAlignment="Left" Margin="67,43,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="FileTypeText" HorizontalAlignment="Left" Height="23" Margin="67,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="158"/>

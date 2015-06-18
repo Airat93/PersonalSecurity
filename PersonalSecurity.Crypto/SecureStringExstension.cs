@@ -11,11 +11,15 @@
             IntPtr valuePtr = IntPtr.Zero;
             try
             {
+                // копируем SecureString в неуправляемую память и получаем указатель на неё
                 valuePtr = Marshal.SecureStringToGlobalAllocUnicode(value);
+
+                // конвертация в строку
                 return Marshal.PtrToStringUni(valuePtr);
             }
             finally
             {
+                // указываем нулевой указатель
                 Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
             }
         }

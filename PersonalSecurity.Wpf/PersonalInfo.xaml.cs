@@ -184,7 +184,7 @@ namespace PersonalSecurity.Wpf
         private void PasswordButton_Click(object sender, RoutedEventArgs e)
         {
             PasswordText.Password.ToCharArray().ForEach(x => _password.AppendChar(x));
-
+            PasswordText.Clear();
             _password.MakeReadOnly();
 
             PasswordPanel.Visibility = Visibility.Hidden;

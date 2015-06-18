@@ -29,26 +29,25 @@
 
         private void LoadFile_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(FileTypeText.Text))
-            {
-                MessageBox.Show("Введите тип файла");
-                return;
-            }
-
             var openDialog = new OpenFileDialog();
             if (openDialog.ShowDialog() == true)
             {
+                // создание в локальной базе информации о загружаемом файле
                 var file = _fileManager.CreateFileInfo(
                     DataAccess.Domain.FileType.File,
                     _cloudApi.Cloud,
                     Path.GetFileName(openDialog.FileName),
                     FileTypeText.Text);
 
+                // локальный путь для хранения зашифрованного файла
                 var encryptedFilePath = _fileManager.GetEncryptedFilePath(file.Name);
 
+                // шифрование файла
                 FileCipher.EncryptFile(openDialog.FileName, encryptedFilePath, _password);
 
-                _cloudApi.UploadFile(file, new FileStream(encryptedFilePath, FileMode.Open), OnUploadComplete);
+                // загрузка зашифрованного файла на облако
+                _cloudApi.UploadFile(file, new FileStream(encryptedFilePath, FileMode.Open),
+                    OnUploadComplete);
             }
         }
 

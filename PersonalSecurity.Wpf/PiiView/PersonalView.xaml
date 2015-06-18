@@ -1,7 +1,7 @@
 ﻿<Window x:Name="Window" x:Class="PersonalSecurity.Wpf.PiiView.PersonalView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PersonalView" Height="314" Width="340">
+        Title="PersonalView" Height="314" Width="340" Background="#FF978F8F">
     <Grid x:Name="Grid">
         <Label x:Name="Name" Content="Name" HorizontalAlignment="Left" Margin="33,63,0,0" VerticalAlignment="Top" Height="30" Width="270"/>
         <Label x:Name="LastName" Content="LastName" HorizontalAlignment="Left" Margin="33,118,0,0" VerticalAlignment="Top" Width="270"/>

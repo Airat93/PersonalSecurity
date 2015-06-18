@@ -45,14 +45,19 @@ namespace PersonalSecurity.Wpf.Password
             InitializeComponent();
         }
 
+
         private void SavePassword_Click(object sender, RoutedEventArgs e)
         {
+            // создание PII структуры
             var piiSer = _piiBuilder.BuildPii(_passwords);
 
+            // шифрование
             var stream = Cipher.EncryptText(piiSer, _password);
 
+            // создание информации о загружаемом файле в локальной БД
             var file = _fileManager.CreateFileInfo(FileType.Passwords, _cloudApi.Cloud);
 
+            // асинхронная загрузка файла
             _cloudApi.UploadFile(file, stream, OnUploadCompleted);
         }
 

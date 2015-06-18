@@ -33,18 +33,26 @@ namespace PersonalSecurity.Wpf
         {
             InitializeComponent();
 
+            // переходим на страницу регистрации
             Browser.Navigate(_yandexOauth.AutUrl);
+
+            // подписка на событие, происходящее при навигации по некоторому URL
             Browser.Navigating += BrowserOnNavigating;
         }
 
         private void BrowserOnNavigating(object sender, NavigatingCancelEventArgs navigatingCancelEventArgs)
         {
+            // проверяем, содержит ли пришедший URL необходимый CallbackURL
             if (navigatingCancelEventArgs.Uri.AbsoluteUri.Contains(_yandexOauth.ReturnUrl))
             {
+
+                // парсим access token
                 var accessToken = _yandexOauth.ParseAccessToken(navigatingCancelEventArgs.Uri);
 
+                // сохраняем его в базу
                 _cloudRepository.Save(new Cloud { AccessToken = accessToken, CloudType = CloudType.Yandex });
 
+                // процедура показа главного окна
                 ShowMain();
             }
         }

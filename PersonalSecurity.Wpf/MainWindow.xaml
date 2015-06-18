@@ -3,7 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="323" Width="486" Background="#FFA43B3B">
     <Grid Background="#FF502881">
-        <Button x:Name="CloudServices" Content="Зарегистрировать облачные сервисы" Margin="83,170,0,0" Width="299" Height="53" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FF151515" BorderBrush="Black" FontSize="16" Click="CloudServices_Click">
+        <Button x:Name="CloudServices" Content="Зарегистрировать облачные сервисы" 
+                Margin="83,170,0,0" Width="299" Height="53" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Foreground="#FF151515" BorderBrush="Black" 
+                FontSize="16" Click="CloudServices_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                     <GradientStop Color="#FFF3F3F3" Offset="0"/>
@@ -13,7 +16,17 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="Yandex" Content="Перейти к Yandex Disk" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="212" Height="59" FontSize="16" Click="Yandex_Click"/>
-        <Button x:Name="Google" Content="Перейти к Google Drive" HorizontalAlignment="Left" Margin="238,30,0,0" VerticalAlignment="Top" Width="212" Height="59" FontSize="16"/>
+        <Button x:Name="Yandex" 
+                Content="Перейти к Yandex Disk" 
+                HorizontalAlignment="Left" 
+                Margin="10,30,0,0" 
+                VerticalAlignment="Top" 
+                Width="212" Height="59" 
+                FontSize="16" Click="Yandex_Click"/>
+        <Button x:Name="Google" 
+                Content="Перейти к Google Drive" 
+                HorizontalAlignment="Left" Margin="238,30,0,0" 
+                VerticalAlignment="Top" Width="212" 
+                Height="59" FontSize="16"/>
     </Grid>
 </Window>

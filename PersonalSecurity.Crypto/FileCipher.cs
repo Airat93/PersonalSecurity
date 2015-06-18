@@ -18,15 +18,21 @@
             aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
             aes.KeySize = aes.LegalKeySizes[0].MaxSize;
 
+            // иницализируем введеный пароль
             var password = new Password(securePass);
+            // получаем значение пароля из SecureString
             var key = new Rfc2898DeriveBytes(password.Value.ToString(), Salt, Iterations);
             password.Dispose();
 
+            // получаем ключ и вектор инициализации
             aes.Key = key.GetBytes(aes.KeySize / 8);
             aes.IV = key.GetBytes(aes.BlockSize / 8);
+
+            // устанавливаем блочный режим шифрования
             aes.Mode = CipherMode.CBC;
             var transform = aes.CreateEncryptor(aes.Key, aes.IV);
 
+            // процесс шифрования
             using (var destination = new FileStream(destinationFilename, FileMode.CreateNew, FileAccess.Write, FileShare.None))
             {
                 using (var cryptoStream = new CryptoStream(destination, transform, CryptoStreamMode.Write))

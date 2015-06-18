@@ -9,7 +9,7 @@
         {
             get
             {
-                return "https://oauth.yandex.ru/authorize?response_type=token&client_id=e3b0b1a2dc44447db5d010a1916a9d93";
+                return "https://oauth.yandex.ru/authorize?response_type=token&client_id=1bce85c938504b8abab435f7c7bfde86";
             }
         }
 

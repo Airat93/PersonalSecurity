@@ -6,24 +6,25 @@
 
     internal class Password : IDisposable
     {
-        private readonly StringBuilder _password;
+        private readonly StringBuilder _strPass;
 
         public Password(SecureString password)
         {
-            _password = new StringBuilder(password.ConvertToString());
+            _strPass = new StringBuilder(password.ConvertToString());
         }
 
         public StringBuilder Value
         {
             get
             {
-                return _password;
+                return _strPass;
             }            
         }
 
         public void Dispose()
         {
-            _password.Clear();
+            // очищаем StringBuilder от пароля
+            _strPass.Clear();
         }
     }
 }
